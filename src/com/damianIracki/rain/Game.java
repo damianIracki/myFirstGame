@@ -1,7 +1,12 @@
-package com.damianIracki;
+package com.damianIracki.rain;
+
+import com.damianIracki.rain.graphics.Screen;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 
 public class Game extends Canvas implements Runnable{
 
@@ -13,12 +18,20 @@ public class Game extends Canvas implements Runnable{
     private JFrame frame;
     private boolean running = false;
 
+    private Screen screen;
+
+    private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    private int[] pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();        //converting image object into ray of integers
+
     public Game(){
         Dimension size = new Dimension(width * scale, height * scale);
         setPreferredSize(size);
 
+        screen = new Screen(width, height);
+
         frame = new JFrame();
     }
+
     public synchronized void start(){
         running = true;
         thread = new Thread(this, "Display");
@@ -34,12 +47,30 @@ public class Game extends Canvas implements Runnable{
         }
     }
 
-
     @Override
     public void run() {
         while(running){
-            System.out.println("Game is running...");
+            update();
+            render();
         }
+    }
+
+    public void update(){
+
+    }
+
+    public void render(){
+        BufferStrategy bufferStrategy = getBufferStrategy();
+        if(bufferStrategy == null){
+            createBufferStrategy(3);
+            return;
+        }
+
+        Graphics g = bufferStrategy.getDrawGraphics();
+        g.setColor(Color.BLACK);
+        g.fillRect(0,0,getWidth(), getHeight());
+        g.dispose();
+        bufferStrategy.show();
     }
 
     public static void main(String[] args) {
