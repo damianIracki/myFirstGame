@@ -1,6 +1,7 @@
 package com.damianIracki.rain;
 
 import com.damianIracki.rain.graphics.Screen;
+import com.damianIracki.rain.input.Keyboard;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +18,7 @@ public class Game extends Canvas implements Runnable{
 
     private Thread thread;
     private JFrame frame;
+    private Keyboard key;
     private boolean running = false;
 
     private Screen screen;
@@ -31,6 +33,9 @@ public class Game extends Canvas implements Runnable{
         screen = new Screen(width, height);
 
         frame = new JFrame();
+
+        key = new Keyboard();
+        addKeyListener(key);
     }
 
     public synchronized void start(){
@@ -56,6 +61,7 @@ public class Game extends Canvas implements Runnable{
         double delta = 0;
         int frames = 0;
         int updates = 0;
+        requestFocus();
 
         while(running){
             long now = System.nanoTime();
@@ -79,7 +85,15 @@ public class Game extends Canvas implements Runnable{
         stop();
     }
 
+    int x = 0, y = 0;
+
     public void update(){
+        key.update();
+        if(key.up) y--;
+        if(key.down) y++;
+        if(key.right) x++;
+        if(key.left) x--;
+
 
     }
 
@@ -91,7 +105,7 @@ public class Game extends Canvas implements Runnable{
         }
 
         screen.clear();
-        screen.render();
+        screen.render(x,y);
 
         for(int i = 0; i < pixels.length; i++){
             pixels[i] = screen.pixels[i];

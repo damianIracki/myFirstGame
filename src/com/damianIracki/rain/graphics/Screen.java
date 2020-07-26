@@ -1,18 +1,28 @@
 package com.damianIracki.rain.graphics;
 
+import java.util.Random;
+
 public class Screen {
 
     private int width, height;
     public int[] pixels;
 
-    int xtime = 100, ytime = 50;
-    int counter = 0;
+    public  final int MAP_SIZE  = 8;
+    public  final int MAP_SIZE_MASK  = MAP_SIZE - 1;
+
+    public int[] tiles = new int[MAP_SIZE * MAP_SIZE];
+
+    private Random random = new Random();
 
     public Screen (int width, int height){
         this.width = width;
         this.height = height;
 
         pixels = new int[width * height];
+
+        for(int i = 0; i < MAP_SIZE * MAP_SIZE; i++){
+            tiles[i] = random.nextInt(0xffffff);        //każdy pixel dostanie randomowy kolor
+        }
     }
 
     public void clear(){
@@ -21,20 +31,15 @@ public class Screen {
         }
     }
 
-    public void render(){
-        counter++;
-        if(counter % 100 == 0){
-            xtime--;
-        }
+    public void render(int xOffset, int yOffset){
 
-        if(counter % 100 == 0){
-            ytime--;
-        }
         for(int y = 0; y < height; y++){
-            if(ytime >= height || ytime < 0) break;
+            int yPixel = y + yOffset;
+            if(yPixel < 0 || yPixel >= height) continue;
             for(int x = 0; x < width; x++){
-                if(xtime >= width || xtime < 0) break;
-                pixels[xtime + ytime *width] = 0xff00ff;
+                int xPixel = x + xOffset;
+                if(xPixel < 0 || xPixel >= width) continue;
+                pixels[xPixel + yPixel * width] = Sprite.grass.pixels[(x&15)+(y&15)*Sprite.grass.SIZE];
             }
         }
     }
