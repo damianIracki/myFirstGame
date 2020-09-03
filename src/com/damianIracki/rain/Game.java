@@ -1,7 +1,10 @@
 package com.damianIracki.rain;
 
+import com.damianIracki.rain.entity.mob.Player;
 import com.damianIracki.rain.graphics.Screen;
 import com.damianIracki.rain.input.Keyboard;
+import com.damianIracki.rain.levels.Level;
+import com.damianIracki.rain.levels.RandomLevel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,6 +22,8 @@ public class Game extends Canvas implements Runnable{
     private Thread thread;
     private JFrame frame;
     private Keyboard key;
+    private Level level;
+    private Player player;
     private boolean running = false;
 
     private Screen screen;
@@ -31,10 +36,10 @@ public class Game extends Canvas implements Runnable{
         setPreferredSize(size);
 
         screen = new Screen(width, height);
-
         frame = new JFrame();
-
         key = new Keyboard();
+        level = new RandomLevel(64, 64);
+        player = new Player(key);
         addKeyListener(key);
     }
 
@@ -85,16 +90,9 @@ public class Game extends Canvas implements Runnable{
         stop();
     }
 
-    int x = 0, y = 0;
-
     public void update(){
         key.update();
-        if(key.up) y--;
-        if(key.down) y++;
-        if(key.right) x++;
-        if(key.left) x--;
-
-
+        player.update();
     }
 
     public void render(){
@@ -105,7 +103,11 @@ public class Game extends Canvas implements Runnable{
         }
 
         screen.clear();
-        screen.render(x,y);
+        //location a player on the screen
+        int xScroll = player.x - screen.width / 2;
+        int yScroll = player.y - screen.height / 2;
+        level.render(xScroll, yScroll, screen);
+        player.render(screen);
 
         for(int i = 0; i < pixels.length; i++){
             pixels[i] = screen.pixels[i];
@@ -115,6 +117,9 @@ public class Game extends Canvas implements Runnable{
         g.setColor(Color.BLACK);
         g.fillRect(0,0,getWidth(), getHeight());
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Verdana", 0, 50));
+        g.drawString("X: "+ player.x + ", Y: " + player.y, 450, 400);
         g.dispose();
         bufferStrategy.show();
     }
