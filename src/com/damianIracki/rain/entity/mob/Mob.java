@@ -17,7 +17,7 @@ public abstract class Mob extends Entity {
         if(yChange > 0)
             direction = 2;
         if(yChange < 0)
-            direction = 1;
+            direction = 0;
 
         if(!collision()){
             x += xChange;

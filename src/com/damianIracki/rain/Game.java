@@ -118,8 +118,8 @@ public class Game extends Canvas implements Runnable{
         g.fillRect(0,0,getWidth(), getHeight());
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
         g.setColor(Color.WHITE);
-        g.setFont(new Font("Verdana", 0, 50));
-        g.drawString("X: "+ player.x + ", Y: " + player.y, 450, 400);
+        //g.setFont(new Font("Verdana", 0, 50));
+        //g.drawString("X: "+ player.x + ", Y: " + player.y, 450, 400);
         g.dispose();
         bufferStrategy.show();
     }

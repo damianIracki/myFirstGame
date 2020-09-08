@@ -57,15 +57,15 @@ public class Screen {
     public void renderPlayer(int xPosition, int yPosition, Sprite sprite){
         yPosition -= yOffset;
         xPosition -= xOffset;
-        for(int y = 0; y < 16; y++){
+        for(int y = 0; y < 32; y++){
             int yAbsolution = y + yPosition;
-            for(int x = 0; x < 16; x++){
+            for(int x = 0; x < 32; x++){
                 int xAbsolution = x + xPosition;
-                if(xAbsolution < -16 || xAbsolution >= width || yAbsolution < 0 || yAbsolution >= height)
+                if(xAbsolution < -32 || xAbsolution >= width || yAbsolution < 0 || yAbsolution >= height)
                     break;
                 if(xAbsolution < 0 )
                     xAbsolution = 0;
-                int color = sprite.pixels[x + y * 16];
+                int color = sprite.pixels[x + y * 32];
                 if(color != 0xFFFF00FF)
                     pixels[xAbsolution + yAbsolution * width] = color;
             }
