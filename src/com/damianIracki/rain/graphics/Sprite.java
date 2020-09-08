@@ -14,10 +14,18 @@ public class Sprite {
 
     public static Sprite playerBackward = new Sprite(32, 0, 4, SpriteSheet.tiles);
     public static Sprite playerForward = new Sprite(32, 0, 5, SpriteSheet.tiles);
-    public static Sprite playerLeft = new Sprite(32, 0, 6, SpriteSheet.tiles);
-    public static Sprite playerRight = new Sprite(32, 0, 7, SpriteSheet.tiles);
+    public static Sprite playerSide = new Sprite(32, 0, 7, SpriteSheet.tiles);
+
+    public static Sprite playerForwardMove1 = new Sprite(32, 1, 5, SpriteSheet.tiles);
+    public static Sprite playerForwardMove2 = new Sprite(32, 3, 5, SpriteSheet.tiles);
+
+    public static Sprite playerBackwardMove1 = new Sprite(32, 1, 4, SpriteSheet.tiles);
+    public static Sprite playerBackwardMove2 = new Sprite(32, 3, 4, SpriteSheet.tiles);
+
+    public static Sprite playerSideMove1 = new Sprite(32, 1, 7, SpriteSheet.tiles);
 
     public Sprite(int size, int x, int y, SpriteSheet sheet){
+
         SIZE = size;
         pixels = new int [SIZE * SIZE];
         this.x = x * size;

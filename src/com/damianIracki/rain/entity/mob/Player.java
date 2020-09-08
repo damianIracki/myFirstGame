@@ -8,6 +8,8 @@ public class Player extends Mob {
 
     private Keyboard input;
     private Sprite sprite;
+    private int animation = 0;
+    private boolean walking;
 
     public Player(Keyboard input){
         this.input = input;
@@ -24,6 +26,10 @@ public class Player extends Mob {
     public void update(){
         int xA = 0;
         int yA = 0;
+        if(animation < 7500)
+            animation++;
+        else
+            animation = 0;
         if(input.up) yA--;
         if(input.down) yA++;
         if(input.left) xA--;
@@ -31,19 +37,57 @@ public class Player extends Mob {
 
         if(xA != 0 || yA != 0){
             move(xA, yA);
+            walking = true;
+        } else {
+            walking = false;
         }
     }
 
     public void render(Screen screen ){
-        if(direction == 0)
+        int flip = 0;
+        if(direction == 0) {
             sprite = Sprite.playerForward;
-        if(direction == 1)
-            sprite = Sprite.playerRight;
-        if(direction == 2)
+            if(walking){
+                if(animation % 20 > 10){
+                    sprite = Sprite.playerForwardMove1;
+                } else {
+                    sprite = Sprite.playerForwardMove2;
+                }
+            }
+        }
+        if(direction == 1) {
+            sprite = Sprite.playerSide;
+            if (walking) {
+                if (animation % 20 > 10) {
+                    sprite = Sprite.playerSideMove1;
+                } else {
+                    sprite = Sprite.playerSide;
+                }
+            }
+        }
+        if(direction == 2) {
             sprite = Sprite.playerBackward;
-        if(direction == 3)
-            sprite = Sprite.playerLeft;
+            if(walking){
+                if(animation % 20 > 10){
+                    sprite = Sprite.playerBackwardMove1;
+                } else {
+                    sprite = Sprite.playerBackwardMove2;
+                }
+            }
+        }
+        if(direction == 3) {
+            sprite = Sprite.playerSide;
+            flip = 1;
+            sprite = Sprite.playerSide;
+            if (walking) {
+                if (animation % 20 > 10) {
+                    sprite = Sprite.playerSideMove1;
+                } else {
+                    sprite = Sprite.playerSide;
+                }
+            }
+        }
 
-        screen.renderPlayer(x - 16, y - 16, sprite);
+        screen.renderPlayer(x - 16, y - 16, sprite, flip);
     }
 }
