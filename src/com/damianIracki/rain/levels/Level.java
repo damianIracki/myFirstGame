@@ -5,10 +5,12 @@ import com.damianIracki.rain.levels.tiles.Tile;
 
 public class Level {
 
-    protected Tile[] tiles;
     protected int width;
     protected int height;
     protected int[] tilesInt;
+    protected int[] tiles;
+
+    public static Level spawn = new SpawnLevel("/levels/spawnLvl.png");
 
     public Level(int width, int height) {
         this.width = width;
@@ -49,12 +51,7 @@ public class Level {
 
         for(int y = y0; y < yEnd; y++){
             for (int x = x0; x < xEnd; x++){
-                //getTile(x, y).render(x, y,  screen);
-                if(x + y * 16 < 0 || x + y * 16 >= 16 * 16){
-                    Tile.voidTile.render(x, y, screen);
-                    continue;
-                }
-                    tiles[x + y * 16].render(x, y, screen);
+                getTile(x, y).render(x, y,  screen);
             }
         }
     }
@@ -63,15 +60,14 @@ public class Level {
         if(x < 0 || y < 0 || x >= width || y >= height){
             return Tile.voidTile;
         }
-        if(tilesInt[x+y*width] == 0){
-            return Tile.grass;
-        }
-        if(tilesInt[x+y*width] == 1){
-            return Tile.flower;
-        }
-        if(tilesInt[x+y*width] == 2){
-            return Tile.rock;
-        }
+        if(tiles[x+y*width] == Tile.COLOR_DESERT) return Tile.desertTile;
+        if(tiles[x+y*width] == Tile.COLOR_DESERT_CACTUS) return Tile.desertCactusTile;
+        if(tiles[x+y*width] == Tile.COLOR_GRASS) return Tile.grass;
+        if(tiles[x+y*width] == Tile.COLOR_GRASS_ROCK) return Tile.rock;
+        if(tiles[x+y*width] == Tile.COLOR_GRASS_FLOWER) return Tile.flower;
+        if(tiles[x+y*width] == Tile.COLOR_GRASS_TREE) return Tile.tree;
+        if(tiles[x+y*width] == Tile.COLOR_STREET_4_SPLIT) return Tile.street4SplitTile;
+
         return Tile.voidTile;
     }
 }

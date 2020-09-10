@@ -4,7 +4,6 @@ import com.damianIracki.rain.entity.mob.Player;
 import com.damianIracki.rain.graphics.Screen;
 import com.damianIracki.rain.input.Keyboard;
 import com.damianIracki.rain.levels.Level;
-import com.damianIracki.rain.levels.RandomLevel;
 import com.damianIracki.rain.levels.SpawnLevel;
 
 import javax.swing.*;
@@ -39,8 +38,8 @@ public class Game extends Canvas implements Runnable{
         screen = new Screen(width, height);
         frame = new JFrame();
         key = new Keyboard();
-        level = new SpawnLevel("/textures/level.png");
-        player = new Player(key);
+        level = SpawnLevel.spawn;
+        player = new Player(6 *16, 5 * 16, key);
         addKeyListener(key);
     }
 
